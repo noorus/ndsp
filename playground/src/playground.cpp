@@ -7,8 +7,7 @@
 #include <xmmintrin.h>
 #include <pmmintrin.h>
 
-typedef double sample;
-typedef double real;
+typedef double Real;
 
 #define AVX_ALIGN __declspec(align(32))
 
@@ -16,7 +15,7 @@ AVX_ALIGN class vec4 {
 public:
   union {
     struct {
-      sample x, y, z, w;
+      Real x, y, z, w;
     };
     __m256d packed;
   };
@@ -24,44 +23,44 @@ public:
   {
     packed = _mm256_setzero_pd();
   }
-  inline vec4( const sample value )
+  inline vec4( const Real value )
   {
     packed = _mm256_broadcast_sd( &value );
   }
   inline vec4( __m256d& rhs ): packed( rhs )
   {
   }
-  inline vec4( sample _x, sample _y, sample _z, sample _w )
+  inline vec4( Real _x, Real _y, Real _z, Real _w )
   {
     packed = _mm256_setr_pd( _x, _y, _z, _w );
   }
   //! Load four 32-byte boundary aligned sample values into vector
-  inline void load( const sample* values )
+  inline void load( const Real* values )
   {
     packed = _mm256_load_pd( values );
   }
   //! Load four unaligned sample values into vector
-  inline void loadUnaligned( const sample* values )
+  inline void loadUnaligned( const Real* values )
   {
     packed = _mm256_loadu_pd( values );
   }
   //! Store four sample values from vector to 32-byte boundary aligned memory
-  inline void store( sample* values )
+  inline void store( Real* values )
   {
     _mm256_stream_pd( values, packed );
   }
   //! Store four sample values from vector to unaligned memory
-  inline void storeUnaligned( sample* values )
+  inline void storeUnaligned( Real* values )
   {
     _mm256_store_pd( values, packed );
   }
   //! Set all vector members to single value
-  inline void set( const sample* value )
+  inline void set( const Real* value )
   {
     packed = _mm256_broadcast_sd( value );
   }
   //! Set vector members individually
-  inline void set( sample _x, sample _y, sample _z, sample _w )
+  inline void set( Real _x, Real _y, Real _z, Real _w )
   {
     packed = _mm256_setr_pd( _x, _y, _z, _w );
   }
@@ -91,7 +90,7 @@ public:
     return _mm256_xor_pd( packed, rhs.packed );
   }
   //! v = a * b
-  inline vec4 operator * ( const real scalar ) const
+  inline vec4 operator * ( const Real scalar ) const
   {
     auto im = _mm256_set1_pd( scalar );
     return _mm256_mul_pd( packed, im );
@@ -102,7 +101,7 @@ public:
     return _mm256_mul_pd( packed, rhs.packed );
   }
   //! v = a / b
-  inline vec4 operator / ( const real scalar ) const
+  inline vec4 operator / ( const Real scalar ) const
   {
     auto im = _mm256_set1_pd( scalar );
     return _mm256_div_pd( packed, im );
@@ -150,7 +149,7 @@ public:
     return _mm256_sqrt_pd( packed );
   }
   //! f = x + y + z + w
-  inline real sum() const
+  inline Real sum() const
   {
     auto hadd = _mm256_hadd_pd( packed, packed );
     auto hi = _mm256_extractf128_pd( hadd, 1 );
