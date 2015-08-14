@@ -33,15 +33,37 @@ public:
   }
   inline vec4( sample _x, sample _y, sample _z, sample _w )
   {
-    packed = _mm256_set_pd( _x, _y, _z, _w );
+    packed = _mm256_setr_pd( _x, _y, _z, _w );
   }
-  inline void set( const sample value )
+  //! Load four 32-byte boundary aligned sample values into vector
+  inline void load( const sample* values )
   {
-    packed = _mm256_broadcast_sd( &value );
+    packed = _mm256_load_pd( values );
   }
+  //! Load four unaligned sample values into vector
+  inline void loadUnaligned( const sample* values )
+  {
+    packed = _mm256_loadu_pd( values );
+  }
+  //! Store four sample values from vector to 32-byte boundary aligned memory
+  inline void store( sample* values )
+  {
+    _mm256_stream_pd( values, packed );
+  }
+  //! Store four sample values from vector to unaligned memory
+  inline void storeUnaligned( sample* values )
+  {
+    _mm256_store_pd( values, packed );
+  }
+  //! Set all vector members to single value
+  inline void set( const sample* value )
+  {
+    packed = _mm256_broadcast_sd( value );
+  }
+  //! Set vector members individually
   inline void set( sample _x, sample _y, sample _z, sample _w )
   {
-    packed = _mm256_set_pd( _x, _y, _z, _w );
+    packed = _mm256_setr_pd( _x, _y, _z, _w );
   }
   //! v = a + b
   inline vec4 operator + ( const vec4& rhs ) const
@@ -53,7 +75,17 @@ public:
   {
     return _mm256_sub_pd( packed, rhs.packed );
   }
-  //! v = a xor b
+  //! v = a & b (bitwise and)
+  inline vec4 operator & ( const vec4& rhs ) const
+  {
+    return _mm256_and_pd( packed, rhs.packed );
+  }
+  //! v = a | b (bitwise or)
+  inline vec4 operator | ( const vec4& rhs ) const
+  {
+    return _mm256_or_pd( packed, rhs.packed );
+  }
+  //! v = a ^ b (bitwise xor)
   inline vec4 operator ^ ( const vec4& rhs ) const
   {
     return _mm256_xor_pd( packed, rhs.packed );
@@ -92,6 +124,11 @@ public:
     auto ret = _mm256_cmp_pd( packed, rhs.packed, _CMP_EQ_OS );
     return ( _mm256_movemask_pd( ret ) == 0 );
   }
+  //! v = round(a)
+  inline vec4 round() const
+  {
+    return _mm256_round_pd( packed, _MM_FROUND_NINT );
+  }
   //! v = ceil(a)
   inline vec4 ceil() const
   {
@@ -112,16 +149,30 @@ public:
   {
     return _mm256_sqrt_pd( packed );
   }
+  //! f = x + y + z + w
+  inline real sum() const
+  {
+    auto hadd = _mm256_hadd_pd( packed, packed );
+    auto hi = _mm256_extractf128_pd( hadd, 1 );
+    auto lo = _mm256_castpd256_pd128( hadd );
+    auto ret = _mm_add_sd( lo, hi );
+    return _mm_cvtsd_f64( ret );
+  }
+  //! v = a * b + c (fused multiply & add)
+  static inline vec4 fma( const vec4& a, const vec4& b, const vec4& c )
+  {
+    return _mm256_fmadd_pd( a.packed, b.packed, c.packed );
+  }
+  //! v = a * b - c (fused multiply & subtract)
+  static inline vec4 fms( const vec4& a, const vec4& b, const vec4& c )
+  {
+    return _mm256_fmsub_pd( a.packed, b.packed, c.packed );
+  }
 };
 
 int main( int argc, char** argv, char** env )
 {
   printf( "playground\n" );
-
-  // set DAZ & FTZ, rounding to nearest
-  _MM_SET_ROUNDING_MODE( _MM_ROUND_NEAREST );
-  _MM_SET_DENORMALS_ZERO_MODE( _MM_DENORMALS_ZERO_ON );
-  _MM_SET_FLUSH_ZERO_MODE( _MM_FLUSH_ZERO_ON );
 
   vec4 a( 1, 2, 3, 4 );
   vec4 b( 5, 6, 7, 8 );
