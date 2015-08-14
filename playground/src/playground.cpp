@@ -169,6 +169,55 @@ public:
   }
 };
 
+class Complex {
+public:
+  Real real;
+  Real imaginary;
+public:
+  inline Complex(): real( 0.0 ), imaginary( 0.0 )
+  {
+  }
+  inline Complex( const Real real_, const Real imaginary_ = 0.0 ) :
+  real( real_ ), imaginary( imaginary_ )
+  {
+  }
+  //! equality
+  inline bool operator == ( const Complex& rhs ) const
+  {
+    return ( real == rhs.real && imaginary == rhs.imaginary );
+  }
+  //! addition
+  inline Complex operator + ( const Complex& rhs ) const
+  {
+    return Complex( real + rhs.real, imaginary + rhs.imaginary );
+  }
+  //! subtraction
+  inline Complex operator - ( const Complex& rhs ) const
+  {
+    return Complex( real - rhs.real, imaginary - rhs.imaginary );
+  }
+  //! multiplication
+  inline Complex operator * ( const Complex& rhs ) const
+  {
+    auto rr = ( ( real * rhs.real ) - ( imaginary * rhs.imaginary ) );
+    auto ir = ( ( imaginary * rhs.real ) + ( real * rhs.imaginary ) );
+    return Complex( rr, ir );
+  }
+  //! division
+  inline Complex operator / ( const Complex& rhs ) const
+  {
+    auto tmp = ( rhs.real * rhs.real + rhs.imaginary * rhs.imaginary );
+    auto rr = ( ( real * rhs.real + imaginary * rhs.imaginary ) / tmp );
+    auto ir = ( ( imaginary * rhs.real - real * rhs.imaginary ) / tmp );
+    return Complex( rr, ir );
+  }
+  //! negation (unary minus)
+  inline Complex operator - () const
+  {
+    return Complex( -real, -imaginary );
+  }
+};
+
 int main( int argc, char** argv, char** env )
 {
   printf( "playground\n" );
