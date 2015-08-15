@@ -93,8 +93,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\ndsp.h" />
+    <ClInclude Include="..\include\ndspComplex.h" />
+    <ClInclude Include="..\include\ndspMath.h" />
+    <ClInclude Include="..\include\ndspPrerequisites.h" />
     <ClInclude Include="..\include\ndspTypes.h" />
     <ClInclude Include="..\include\ndspUtil.h" />
+    <ClInclude Include="..\include\ndspVector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
