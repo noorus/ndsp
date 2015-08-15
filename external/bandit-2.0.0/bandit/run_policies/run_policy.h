@@ -7,7 +7,7 @@ namespace bandit { namespace detail {
   {
     run_policy() : encountered_failure_(false) {}
     run_policy(const run_policy& other) = default;
-    run_policy(run_policy&&) = default;
+    // run_policy(run_policy&&) = default;
     virtual ~run_policy() {}
 
     virtual bool should_run(const char* it_name, const contextstack_t& contexts) const = 0;
