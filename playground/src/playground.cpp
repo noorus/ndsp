@@ -6,6 +6,7 @@
 #include <intrin.h>
 #include <xmmintrin.h>
 #include <pmmintrin.h>
+#include <math.h>
 
 typedef double Real;
 
@@ -215,6 +216,20 @@ public:
   inline Complex operator - () const
   {
     return Complex( -real, -imaginary );
+  }
+  //! magnitude
+  inline Real magnitude() const
+  {
+    return ( real * real + imaginary * imaginary );
+  }
+  //! absolute (magnitude)
+  inline Real abs() const
+  {
+    return sqrt( magnitude() );
+  }
+  inline Real arg() const
+  {
+    return atan2( real, imaginary );
   }
 };
 
