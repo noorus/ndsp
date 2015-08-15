@@ -1,11 +1,5 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <cstdint>
-#include <list>
-#include <vector>
-#include <string>
-#include <exception>
+#include "ndspPrerequisites.h"
 #include "ndspTypes.h"
 
 namespace ndsp {
