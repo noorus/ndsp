@@ -9,11 +9,9 @@ namespace ndsp {
     Real real;
     Real imaginary;
   public:
-    inline Complex(): real( 0.0 ), imaginary( 0.0 )
-    {
-    }
-    inline Complex( const Real real_, const Real imaginary_ = 0.0 ) :
-      real( real_ ), imaginary( imaginary_ )
+    //! default constructor
+    inline Complex( const Real real_ = 0.0, const Real imaginary_ = 0.0 ):
+    real( real_ ), imaginary( imaginary_ )
     {
     }
     //! equality
@@ -56,6 +54,7 @@ namespace ndsp {
     {
       return Complex( real, -imaginary );
     }
+    //! square real
     inline Real sqr() const
     {
       return ( real * real + imaginary * imaginary );
