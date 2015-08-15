@@ -6,8 +6,14 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ndsp", "ndsp\ndsp.vcxproj", "{BA7F9D97-05CB-4BC0-BCB7-7B31ABBA61F7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "playground", "playground\playground.vcxproj", "{ADE3DECA-B587-4A2F-9CBE-FB7AB60E63AF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA7F9D97-05CB-4BC0-BCB7-7B31ABBA61F7} = {BA7F9D97-05CB-4BC0-BCB7-7B31ABBA61F7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcxproj", "{4E80356C-CD6A-48C8-B771-1922E20AACFE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BA7F9D97-05CB-4BC0-BCB7-7B31ABBA61F7} = {BA7F9D97-05CB-4BC0-BCB7-7B31ABBA61F7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

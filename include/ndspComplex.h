@@ -41,9 +41,9 @@ namespace ndsp {
     //! division
     inline Complex operator / ( const Complex& rhs ) const
     {
-      auto tmp = ( rhs.real * rhs.real + rhs.imaginary * rhs.imaginary );
-      auto rr = ( ( real * rhs.real + imaginary * rhs.imaginary ) / tmp );
-      auto ir = ( ( imaginary * rhs.real - real * rhs.imaginary ) / tmp );
+      auto rsqr = rhs.sqr();
+      auto rr = ( ( real * rhs.real + imaginary * rhs.imaginary ) / rsqr );
+      auto ir = ( ( imaginary * rhs.real - real * rhs.imaginary ) / rsqr );
       return Complex( rr, ir );
     }
     //! negation (unary minus)
