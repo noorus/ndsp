@@ -36,3 +36,6 @@
 *.ilk
 *.pdb
 *.log
+*.user
+*.iobj
+*.ipdb
